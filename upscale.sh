@@ -1,9 +1,16 @@
-# s22f7.sh
-# Upscale Video from  and Create Release
+##
+# Name:   upscale.sh
+# Info:   Upscale Video from Source and Create Release.
 # Author: S22F5
 ##
+# $1  >  Input Video
+# $2  >  Input FPS
+# $3  >  Upscale Factor
+##
+###
+
 #info output
-echo "usage: ./s22f7.sh video.mkv(sourcevideo) 24000/1001(videofps) 2(scalefactor can be 2/4)"
+echo "usage: ./upscale.sh video.mkv(Input Video) 24000/1001(Input FPS) 2(scalefactor can be 2/4)"
 #setup folder structure
 mkdir source_frames
 mkdir scaled_frames
@@ -79,6 +86,6 @@ convert -size 1920x1080 +append /tmp/l18000.png /tmp/r18000.png -resize 1920x108
 rm -rvf source_frames
 rm -rvf scaled_frames
 #
-echo "have a nice day \o_o/" 
+echo "have a nice day \v_v/" 
 
 
