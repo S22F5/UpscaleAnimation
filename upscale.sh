@@ -22,12 +22,16 @@ ffmpeg -ss 3 -i 1.mkv -r 60  %06d.png |& awk -v framecount="$framecount" '{print
 #upscale frames
 cd source_frames
 for frames in *.png
-        echo $fixframes
+        echo $frames
 	do realesrgan-ncnn-vulkan -n RealESRGANv2-animevideo-xsx2 -s $3 -i $frames -o ../scaled_frames/$frames > /dev/null
 	done
 cd ..
 
-###
+
+
+
+
+###fixing bug where sometimes instead of the scaled up images you just get a 0B empty image
 #fix errors in the scaler
 mkdir fix
 cd scaled_frames
@@ -73,6 +77,10 @@ for fixframes in *.png
 cd ..
 ###
 
+
+
+
+
 #reasemble video and encode with x265
 ffmpeg -s 1920x1080 -r $2 -i scaled_frames/%06d.png -i $1 -c:v libx265 -map 0:v -map 1 -map -1:v -vf scale=1920:1080 release/havefun.mkv
 #create frame comparisings
@@ -83,11 +91,11 @@ convert -size 1920x1080 +append /tmp/l5000.png /tmp/r5000.png -resize 1920x1080 
 #10000
 convert source_frames/010000.png -gravity west -crop 8:9 /tmp/l10000.png
 convert scaled_frames/010000.png -gravity east -crop 8:9 /tmp/r10000.png
-convert -size 1920x1080 +append /tmp/l10000.png /tmp/r10000.png -resize 1920x1080 -annotate +10+10 "Frame 5000" -stroke black -strokewidth 4 -draw "line 960,0,960,1080" +repage -strokewidth 100 release/frame10000.png
+convert -size 1920x1080 +append /tmp/l10000.png /tmp/r10000.png -resize 1920x1080 -annotate +10+10 "Frame 10000" -stroke black -strokewidth 4 -draw "line 960,0,960,1080" +repage -strokewidth 100 release/frame10000.png
 #18000
 convert source_frames/018000.png -gravity west -crop 8:9 /tmp/l18000.png
 convert scaled_frames/018000.png -gravity east -crop 8:9 /tmp/r18000.png
-convert -size 1920x1080 +append /tmp/l18000.png /tmp/r18000.png -resize 1920x1080 -annotate +10+10 "Frame 5000" -stroke black -strokewidth 4 -draw "line 960,0,960,1080" +repage -strokewidth 100 release/frame18000.png
+convert -size 1920x1080 +append /tmp/l18000.png /tmp/r18000.png -resize 1920x1080 -annotate +10+10 "Frame 18000" -stroke black -strokewidth 4 -draw "line 960,0,960,1080" +repage -strokewidth 100 release/frame18000.png
 #clean up
 rm -rvf source_frames
 rm -rvf scaled_frames
