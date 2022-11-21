@@ -10,7 +10,11 @@
 ###
 
 #info output
-echo "usage: ./upscale.sh video.mkv(Input Video) 24000/1001(Input FPS) 2(scalefactor can be 2/4)"
+if [ -z "$3" ]
+  then
+    echo "usage: ./upscale.sh video.mkv(Input Video) 24000/1001(Input FPS) 2(scalefactor can be 2/4)"
+    exit 1
+fi
 #setup folder structure
 mkdir source_frames
 mkdir scaled_frames
