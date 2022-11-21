@@ -15,12 +15,15 @@ echo "usage: ./upscale.sh video.mkv(Input Video) 24000/1001(Input FPS) 2(scalefa
 mkdir source_frames
 mkdir scaled_frames
 mkdir release
+#get frame count
+framecount=$(ffmpeg -i 1.mkv -map 0:v:0 -c copy -f null -y /dev/null 2>&1 | grep -Eo 'frame= *[0-9]+ *' | grep -Eo '[0-9]+' | tail -1)
 #extract frames
-ffmpeg -ss 3 -i $1 -r $2  source_frames/%06d.png
+ffmpeg -ss 3 -i 1.mkv -r 60  %06d.png |& awk -v framecount="$framecount" '{print $2 "/" framecount "Frames"}'  RS='\r'
 #upscale frames
 cd source_frames
 for frames in *.png
-	do realesrgan-ncnn-vulkan -n RealESRGANv2-animevideo-xsx2 -s $3 -i $frames -o ../scaled_frames/$frames
+        echo $fixframes
+	do realesrgan-ncnn-vulkan -n RealESRGANv2-animevideo-xsx2 -s $3 -i $frames -o ../scaled_frames/$frames > /dev/null
 	done
 cd ..
 
@@ -35,7 +38,8 @@ cd ..
 cp source_frames/$errorfiles fix
 cd fix
 for fixframes in *.png
-	do realesrgan-ncnn-vulkan -n RealESRGANv2-animevideo-xsx2 -s $3 -i $fixframes -o ../scaled_frames/$frames
+        echo $fixframes
+	do realesrgan-ncnn-vulkan -n RealESRGANv2-animevideo-xsx2 -s $3 -i $fixframes -o ../scaled_frames/$frames > /dev/null
 	done
 cd ..
 rm -rvf fix
@@ -49,7 +53,8 @@ cd ..
 cp source_frames/$errorfiles fix
 cd fix
 for fixframes in *.png
-        do realesrgan-ncnn-vulkan -n RealESRGANv2-animevideo-xsx2 -s $3 -i $fixframes -o ../scaled_frames/$frames
+        echo $fixframes
+        do realesrgan-ncnn-vulkan -n RealESRGANv2-animevideo-xsx2 -s $3 -i $fixframes -o ../scaled_frames/$frames > /dev/null
         done
 cd ..
 #fix3
@@ -62,7 +67,8 @@ cd ..
 cp source_frames/$errorfiles fix
 cd fix
 for fixframes in *.png
-        do realesrgan-ncnn-vulkan -n RealESRGANv2-animevideo-xsx2 -s $3 -i $fixframes -o ../scaled_frames/$frames
+        echo $fixframes
+        do realesrgan-ncnn-vulkan -n RealESRGANv2-animevideo-xsx2 -s $3 -i $fixframes -o ../scaled_frames/$frames > /dev/null
         done
 cd ..
 ###
