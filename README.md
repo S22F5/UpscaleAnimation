@@ -8,4 +8,4 @@ Upscales Animation Videos using https://github.com/xinntao/Real-ESRGAN-ncnn-vulk
 
 ```chmod +x upscale.sh```
 
-```./upscale.sh video.mkv 60(fps) 2(scalefactor can be 2/4)```
+```./upscale.sh video.mkv  2(scalefactor can be 2/4)```
