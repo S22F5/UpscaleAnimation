@@ -21,9 +21,9 @@ mkdir scaled_frames
 mkdir release
 
 #get frame rate
-framerate=$(ffmpeg -i $1 2>&1 | sed -n "s/.*, \(.*\) tbr.*/\1/p")
+framerate=$(ffprobe -select_streams v:0 -of default=noprint_wrappers=1:nokey=1 -show_entries stream=r_frame_rate -v quiet -of csv="p=0" $1)
 #extract frames
-ffmpeg -ss 3 -i $1 -r $framerate  source_frames/%06d.png
+ffmpeg -i $1 -r $framerate  source_frames/%06d.png
 #get frame count
 framecount=$(ls source_frames/ | sort -rn | head -n 1)
 #upscale frames
