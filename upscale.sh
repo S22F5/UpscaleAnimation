@@ -97,7 +97,7 @@ rm -rvf fix
 
 
 #reasemble video and encode with x265
-ffmpeg -s 1920x1080 -r $framerate -i scaled_frames/%06d.png -i $1 -c:v libx265 -map 0:v -map 1 -map -1:v -vf scale=1920:1080 release/havefun.mkv
+ffmpeg -s 1920x1080 -r $framerate -i scaled_frames/%06d.png -i $1 -c:v libx265 -map 0:v -map 1 -map -1:v -vf scale=1920:-2 release/havefun.mkv
 #create frame comparisings
 #5000
 convert source_frames/005000.png -gravity west -crop 8:9 /tmp/l5000.png
