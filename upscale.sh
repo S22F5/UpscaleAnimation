@@ -99,18 +99,10 @@ rm -rvf fix
 #reasemble video and encode with x265
 ffmpeg -s 1920x1080 -r $framerate -i scaled_frames/%06d.png -i $1 -c:v libx265 -map 0:v -map 1 -map -1:v -vf scale=1920:-2 release/havefun.mkv
 #create frame comparisings
-#5000
-convert source_frames/005000.png -gravity west -crop 8:9 /tmp/l5000.png
-convert scaled_frames/005000.png -gravity east -crop 8:9 /tmp/r5000.png
-convert -size 1920x1080 +append /tmp/l5000.png /tmp/r5000.png -resize 1920x1080 -annotate +10+10 "Frame 5000" -stroke black -strokewidth 4 -draw "line 960,0,960,1080" +repage -strokewidth 100 release/frame5000.png
-#10000
-convert source_frames/010000.png -gravity west -crop 8:9 /tmp/l10000.png
-convert scaled_frames/010000.png -gravity east -crop 8:9 /tmp/r10000.png
-convert -size 1920x1080 +append /tmp/l10000.png /tmp/r10000.png -resize 1920x1080 -annotate +10+10 "Frame 10000" -stroke black -strokewidth 4 -draw "line 960,0,960,1080" +repage -strokewidth 100 release/frame10000.png
-#18000
-convert source_frames/018000.png -gravity west -crop 8:9 /tmp/l18000.png
-convert scaled_frames/018000.png -gravity east -crop 8:9 /tmp/r18000.png
-convert -size 1920x1080 +append /tmp/l18000.png /tmp/r18000.png -resize 1920x1080 -annotate +10+10 "Frame 18000" -stroke black -strokewidth 4 -draw "line 960,0,960,1080" +repage -strokewidth 100 release/frame18000.png
+#200
+convert source_frames/000200.png -crop 50%x100% +delete +repage /tmp/l000200.png
+convert scaled_frames/000200.png -gravity East -crop 50%x100% +repage /tmp/r000200.png
+convert +append /tmp/l000200.png /tmp/r000200.png -resize x1080 release/frame200.png
 #clean up
 rm -rvf source_frames 1> /dev/null
 rm -rvf scaled_frames 1> /dev/null
