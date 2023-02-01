@@ -2,7 +2,7 @@
 Upscales Animation Videos using https://github.com/xinntao/Real-ESRGAN-ncnn-vulkan
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/S22F5/Real-UpscaleAnimation/master/assets/frame_comp.png">
+  <img src="https://raw.githubusercontent.com/S22F5/UpscaleAnimation/master/assets/frame_comp.png">
 </p>
 
 ## Usage:
