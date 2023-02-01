@@ -2,9 +2,8 @@
 Upscales Animation Videos using https://github.com/xinntao/Real-ESRGAN-ncnn-vulkan
 
 ## Usage:
-```git clone https://github.com/S22F5/UpscaleAnimation.git```
 
-```cd UpscaleAnimation```
+```wget "https://github.com/S22F5/UpscaleAnimation/raw/master/upscale.sh"```
 
 ```chmod +x upscale.sh```
 
