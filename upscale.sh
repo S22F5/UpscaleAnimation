@@ -7,18 +7,20 @@
 # Notes:
 # $1  >  Input Video
 # $2  >  Upscale Factor
+# $3  >  Frame Similarity Threshold
 ##
 
 #info output
-if [ -z "$2" ]
+if [ -z "$3" ]
   then
-    echo "usage: ./upscale.sh video.mkv(Input Video) 2(scalefactor can be 2/4)"
+    echo "usage: ./upscale.sh video.mkv(Input Video) 2(Scale can be 2/4) 101(Frame Similarity Threshold (over 100 = disabled))"
     exit 1
 fi
 
 #setup folder structure
 mkdir source_frames
 mkdir scaled_frames
+mkdir safe_delete
 mkdir release
 
 #get frame rate
@@ -29,6 +31,38 @@ ffmpeg -i "$1" -r "$framerate"  source_frames/%06d.png
 
 #get frame count
 framecount=$(ls source_frames/ | sort -rn | head -n 1)
+
+
+
+#deal with duplicate frames (info:we are in top directory)
+#find duplicate frames
+cd source_frames || exit
+echo "finding duplicate frames:"
+findimagedupes -t "$3" -- *.png > dupes
+printf "done"
+#process output
+while IFS= read -r line; do
+	
+    #delete duplicate frames except first
+	duplicate_frames=$(awk '{$1=""}1' <<< "$line" | xargs basename -a)		
+	#save the name of one of the frames
+	source_frame=$(awk '{print $1}' <<< "$line" | xargs basename -a)
+	#upscale one of the frames
+	echo "upscaling duplicate stem frames"
+	realesrgan-ncnn-vulkan -s 2 -i "$source_frame" -o ../scaled_frames/"$source_frame" > /dev/null
+	#copy
+	cd ../scaled_frames || exit
+	echo "filling frame gaps"
+	< "$source_frame" tee "$duplicate_frames" > /dev/null
+	cd ../source_frames || exit
+	echo "deleting duplicate frames"
+	echo "$line" | xargs -n 1 mv -t ../safe_delete
+	#clear variables
+	duplicate_frames=
+	source_frame=
+	
+done < dupes
+cd ..
 
 
 #upscale frames
@@ -100,15 +134,15 @@ ffmpeg -s 1920x1080 -r "$framerate" -i scaled_frames/%06d.png -i "$1" -c:v libx2
 
 #create frame comparisings
 #200
-convert source_frames/000200.png -crop 50%x100% +delete +repage /tmp/l000200.png
-convert scaled_frames/000200.png -gravity East -crop 50%x100% +repage /tmp/r000200.png
-convert +append /tmp/l000200.png /tmp/r000200.png -resize x1080 release/frame200.png
+#convert source_frames/000200.png -crop 50%x100% +delete +repage /tmp/l000200.png
+#convert scaled_frames/000200.png -gravity East -crop 50%x100% +repage /tmp/r000200.png
+#convert +append /tmp/l000200.png /tmp/r000200.png -resize x1080 release/frame200.png
 
 
 #clean up
 rm -rvf source_frames 1> /dev/null
 rm -rvf scaled_frames 1> /dev/null
+rm -rvf safe_delete 1> /dev/null
 
-
-#
+#goodbye
 printf "have a nice day ·–· \n"
