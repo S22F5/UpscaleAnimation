@@ -82,13 +82,15 @@ mkdir fix
 cd scaled_frames || exit
 errorinfo=$(ls -SrqL . | head -1)
 errorsize=$(stat -c %s "$errorinfo")
-errorfiles=$(find . -size "$errorsize"c -printf '%f\n')
+errorfiles=$(printf "source_frames/" ;find . -size "$errorsize"c -printf '%f\n')
+echo "$errorfiles" > /home/seefs/log
 cd .. || exit
-cp source_frames/"$errorfiles" fix
+echo $errorfiles | xargs -n 1 cp -t fix
 cd fix || exit
 for fixframes in *.png; do
-	clear
+	#clear
     echo "$fixframes" " / " "$framecount"
+	echo "2: $fixframes" >> /home/seefs/log
 	realesrgan-ncnn-vulkan -s "$2" -i "$fixframes" -o ../scaled_frames/"$fixframes" > /dev/null
 	done
 cd .. || exit
@@ -99,15 +101,17 @@ mkdir fix
 cd scaled_frames || exit
 errorinfo=$(ls -SrqL . | head -1)
 errorsize=$(stat -c %s "$errorinfo")
-errorfiles=$(find . -size "$errorsize"c -printf '%f\n')
+errorfiles=$(printf "source_frames/" ;find . -size "$errorsize"c -printf '%f\n')
+echo "$errorfiles" > /home/seefs/log
 cd .. || exit
-cp source_frames/"$errorfiles" fix
+echo $errorfiles | xargs -n 1 cp -t fix
 cd fix || exit
 for fixframes in *.png; do
-	clear
-	echo "$fixframes" " / " "$framecount"
- 	realesrgan-ncnn-vulkan -s "$2" -i "$fixframes" -o ../scaled_frames/"$fixframes" > /dev/null
-    done
+	#clear
+    echo "$fixframes" " / " "$framecount"
+	echo "2: $fixframes" >> /home/seefs/log
+	realesrgan-ncnn-vulkan -s "$2" -i "$fixframes" -o ../scaled_frames/"$fixframes" > /dev/null
+	done
 cd .. || exit
 rm -rvf fix
 
@@ -116,15 +120,17 @@ mkdir fix
 cd scaled_frames || exit
 errorinfo=$(ls -SrqL . | head -1)
 errorsize=$(stat -c %s "$errorinfo")
-errorfiles=$(find . -size "$errorsize"c -printf '%f\n')
+errorfiles=$(printf "source_frames/" ;find . -size "$errorsize"c -printf '%f\n')
+echo "$errorfiles" > /home/seefs/log
 cd .. || exit
-cp source_frames/"$errorfiles" fix
+echo $errorfiles | xargs -n 1 cp -t fix
 cd fix || exit
 for fixframes in *.png; do
-	clear
-	echo "$fixframes" " / " "$framecount"
-    realesrgan-ncnn-vulkan -s "$2" -i "$fixframes" -o ../scaled_frames/"$fixframes" > /dev/null
-    done
+	#clear
+    echo "$fixframes" " / " "$framecount"
+	echo "2: $fixframes" >> /home/seefs/log
+	realesrgan-ncnn-vulkan -s "$2" -i "$fixframes" -o ../scaled_frames/"$fixframes" > /dev/null
+	done
 cd .. || exit
 rm -rvf fix
 
