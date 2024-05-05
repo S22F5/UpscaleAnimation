@@ -44,7 +44,7 @@ printf "done"
 while IFS= read -r line; do
 	
     #delete duplicate frames except first
-	duplicate_frames=$(awk '{$1=""}1' <<< "$line" | xargs basename -a)		
+	duplicate_frames=$(awk '{$1=""}1' <<< "$line" | xargs basename -a | tr '\n' ' ')		
 	#save the name of one of the frames
 	source_frame=$(awk '{print $1}' <<< "$line" | xargs basename -a)
 	#upscale one of the frames
@@ -53,7 +53,7 @@ while IFS= read -r line; do
 	#copy
 	cd ../scaled_frames || exit
 	echo "filling frame gaps"
-	< "$source_frame" tee "$duplicate_frames" > /dev/null
+	echo $duplicate_frames | xargs -n 1 cp "$source_frame" > /dev/null
 	cd ../source_frames || exit
 	echo "deleting duplicate frames"
 	echo "$line" | xargs -n 1 mv -t ../safe_delete
