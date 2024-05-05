@@ -1,9 +1,6 @@
 # UpscaleAnimation
-Upscales Animation Videos using https://github.com/xinntao/Real-ESRGAN-ncnn-vulkan
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/S22F5/UpscaleAnimation/master/assets/frame_comp.png">
-</p>
+https://github.com/S22F5/UpscaleAnimation/assets/51321684/3c4f102b-507d-4d40-9c1b-4fb80c612989
 
 ## Usage:
 
