@@ -1,4 +1,5 @@
 #!/bin/bash
+alias ls=ls
 ##
 # Name:   upscale.sh
 # Info:   Upscale Video from Source and Create Release.
